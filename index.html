@@ -1,2 +1,378 @@
 <h1>sito di Mk</h1>
-<img src="https://thumbs.dreamstime.com/b/cute-cartoon-cat-set-cute-cartoon-cat-drawing-set-different-breeds-colors-hand-drawn-kitty-doodles-simple-kawaii-style-169759060.jpg">
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK - Artista e Disegnatrice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            color: #4a5568;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #718096;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .intro {
+            font-size: 1.1em;
+            color: #4a5568;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .artwork {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .artwork:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .artwork-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .artwork-image::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .artwork-image::after {
+            content: '🎨';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            opacity: 0.7;
+        }
+
+        .artwork-info {
+            padding: 25px;
+        }
+
+        .artwork-title {
+            font-size: 1.4em;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .artwork-description {
+            color: #4a5568;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .section {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            margin-top: 40px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            font-size: 2.5em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section p {
+            font-size: 1.1em;
+            color: #4a5568;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        /* Colori specifici per ogni artwork */
+        .artwork:nth-child(1) .artwork-image { background: linear-gradient(45deg, #ff6b6b, #feca57); }
+        .artwork:nth-child(2) .artwork-image { background: linear-gradient(45deg, #48dbfb, #0abde3); }
+        .artwork:nth-child(3) .artwork-image { background: linear-gradient(45deg, #ff9ff3, #f368e0); }
+        .artwork:nth-child(4) .artwork-image { background: linear-gradient(45deg, #54a0ff, #2e86de); }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .gallery { grid-template-columns: 1fr; }
+            .container { padding: 10px; }
+            header { padding: 30px 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element" style="top: 10%; left: 10%; font-size: 2em;">🎨</div>
+        <div class="floating-element" style="top: 20%; right: 15%; font-size: 1.5em;">✏</div>
+        <div class="floating-element" style="top: 60%; left: 5%; font-size: 1.8em;">🖌</div>
+        <div class="floating-element" style="top: 70%; right: 10%; font-size: 2.2em;">🎭</div>
+        <div class="floating-element" style="top: 30%; left: 80%; font-size: 1.6em;">🌈</div>
+    </div>
+
+    <div class="container">
+        <header id="home">
+            <h1>MK</h1>
+            <p class="subtitle">Artista e Disegnatrice</p>
+            <p class="intro">
+                Benvenuti nel mio mondo creativo! Sono MK e la mia passione è dare vita ai sogni attraverso disegni e dipinti. 
+                Ogni tratto racconta una storia, ogni colore esprime un'emozione. Esplorate la mia arte e lasciatevi trasportare 
+                in un viaggio di fantasia e bellezza.
+            </p>
+        </header>
+
+        <div class="gallery" id="gallery">
+            <div class="artwork" onclick="showSection('ritratti')">
+                <div class="artwork-image"></div>
+                <div class="artwork-info">
+                    <h3 class="artwork-title">Ritratti</h3>
+                    <p class="artwork-description">
+                        Catturare l'essenza dell'anima attraverso volti e espressioni uniche. 
+                        Ogni ritratto racconta la storia di una persona speciale.
+                    </p>
+                </div>
+            </div>
+
+            <div class="artwork" onclick="showSection('paesaggi')">
+                <div class="artwork-image"></div>
+                <div class="artwork-info">
+                    <h3 class="artwork-title">Paesaggi</h3>
+                    <p class="artwork-description">
+                        La natura in tutte le sue forme: dalle montagne maestose ai tramonti mozzafiato, 
+                        dipinti con amore e rispetto per la bellezza del mondo.
+                    </p>
+                </div>
+            </div>
+
+            <div class="artwork" onclick="showSection('fantasy')">
+                <div class="artwork-image"></div>
+                <div class="artwork-info">
+                    <h3 class="artwork-title">Fantasy</h3>
+                    <p class="artwork-description">
+                        Mondi immaginari popolati da creature magiche e avventure straordinarie. 
+                        Dove la fantasia diventa realtà attraverso colori e forme.
+                    </p>
+                </div>
+            </div>
+
+            <div class="artwork" onclick="showSection('commissioni')">
+                <div class="artwork-image"></div>
+                <div class="artwork-info">
+                    <h3 class="artwork-title">Commissioni</h3>
+                    <p class="artwork-description">
+                        Opere personalizzate create appositamente per voi. Trasformo le vostre idee 
+                        in capolavori unici che rimarranno per sempre.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezioni nascoste -->
+        <div id="ritratti" class="section">
+            <h2>Ritratti</h2>
+            <p>
+                I miei ritratti nascono dall'osservazione attenta di ogni dettaglio del viso umano. 
+                Uso principalmente matite e carboncino per creare opere in bianco e nero che catturano 
+                l'essenza delle persone. Ogni ritratto è un viaggio nell'anima del soggetto, 
+                dove cerco di immortalare non solo l'aspetto fisico, ma anche il carattere e 
+                la personalità attraverso gli occhi, il sorriso e le espressioni più autentiche.
+            </p>
+            <button class="back-btn" onclick="showGallery()">Torna alla Galleria</button>
+        </div>
+
+        <div id="paesaggi" class="section">
+            <h2>Paesaggi</h2>
+            <p>
+                La natura è la mia più grande fonte di ispirazione. Dipingo paesaggi ad acquerello 
+                e olio, catturando la luce dorata dell'alba, i riflessi dell'acqua e la maestosità 
+                delle montagne. Ogni paesaggio racconta una storia diversa: la tranquillità di un 
+                lago al tramonto, la forza di una tempesta o la delicatezza di un campo fiorito. 
+                Amo viaggiare e immortalare i luoghi che visitano il mio cuore.
+            </p>
+            <button class="back-btn" onclick="showGallery()">Torna alla Galleria</button>
+        </div>
+
+        <div id="fantasy" class="section">
+            <h2>Fantasy</h2>
+            <p>
+                Nel mondo del fantasy posso dare libero sfogo alla mia immaginazione. Creo draghi 
+                maestosi, fate incantevoli, paesaggi di mondi lontani e creature magiche che 
+                esistono solo nella mia fantasia. Uso colori vivaci e tecniche miste per dare 
+                vita a queste visioni oniriche. Ogni opera fantasy è un invito a sognare e 
+                a credere nella magia che ci circonda ogni giorno.
+            </p>
+            <button class="back-btn" onclick="showGallery()">Torna alla Galleria</button>
+        </div>
+
+        <div id="commissioni" class="section">
+            <h2>Commissioni</h2>
+            <p>
+                Realizzo opere su commissione per chi desidera un'arte personalizzata e unica. 
+                Che si tratti di un ritratto di famiglia, un paesaggio del vostro luogo del cuore 
+                o una creazione fantasy ispirata ai vostri sogni, lavoro a stretto contatto con 
+                voi per creare qualcosa di veramente speciale. Ogni commissione è un progetto 
+                collaborativo dove le vostre idee si trasformano in arte tangibile.
+            </p>
+            <button class="back-btn" onclick="showGallery()">Torna alla Galleria</button>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Nascondi la galleria
+            document.getElementById('gallery').style.display = 'none';
+            document.getElementById('home').style.display = 'none';
+            
+            // Nascondi tutte le sezioni
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostra la sezione selezionata
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function showGallery() {
+            // Nascondi tutte le sezioni
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostra la galleria e l'header
+            document.getElementById('gallery').style.display = 'grid';
+            document.getElementById('home').style.display = 'block';
+        }
+
+        // Aggiungi effetto hover alle card
+        const artworks = document.querySelectorAll('.artwork');
+        artworks.forEach(artwork => {
+            artwork.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            artwork.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
